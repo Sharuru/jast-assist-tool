@@ -15,13 +15,15 @@ import java.util.Set;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
+ * User entity
+ * <p>
  * Created by Sharuru on 2017/06/29.
  */
 @Data
 @Entity
 @Table(name = "tracer_user")
 @EntityListeners(AuditingEntityListener.class)
-public class TblTracerUser implements Serializable{
+public class TblTracerUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
@@ -50,7 +52,7 @@ public class TblTracerUser implements Serializable{
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "username", referencedColumnName = "username")
-    private Set<TblTracerRole> roles = new HashSet<TblTracerRole>();
+    private Set<TblTracerRole> roles = new HashSet<>();
 
     public TblTracerUser() {
     }

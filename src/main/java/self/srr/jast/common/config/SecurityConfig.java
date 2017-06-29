@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import self.srr.jast.common.security.TracerUserDetailService;
 
 /**
+ * Security configuration
+ * <p>
  * Created by Sharuru on 2017/06/29.
  */
 @Configuration
@@ -41,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/account/login")
+                .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()

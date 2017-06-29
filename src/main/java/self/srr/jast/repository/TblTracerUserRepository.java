@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import self.srr.jast.entity.TblTracerUser;
 
 /**
+ * User repository
+ * <p>
  * Created by Sharuru on 2017/06/29.
  */
 @Repository

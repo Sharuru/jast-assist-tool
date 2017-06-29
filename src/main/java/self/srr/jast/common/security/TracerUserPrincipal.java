@@ -1,7 +1,6 @@
 package self.srr.jast.common.security;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import self.srr.jast.entity.TblTracerRole;
@@ -12,6 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Custom user entity
+ * <p>
  * Created by Sharuru on 2017/06/29.
  */
 public class TracerUserPrincipal implements UserDetails {
@@ -19,7 +20,7 @@ public class TracerUserPrincipal implements UserDetails {
 
     private TblTracerUser user;
 
-    public TracerUserPrincipal(TblTracerUser user) {
+    TracerUserPrincipal(TblTracerUser user) {
         this.user = user;
     }
 

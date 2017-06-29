@@ -12,6 +12,8 @@ import self.srr.jast.entity.TblTracerUser;
 import self.srr.jast.repository.TblTracerUserRepository;
 
 /**
+ * Custom user service
+ * <p>
  * Created by Sharuru on 2017/06/29.
  */
 @Service
@@ -27,7 +29,7 @@ public class TracerUserDetailService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        log.info("User '" + user.getUsername() + "' queried : " + user.toString());
+        log.info("Get user: " + user.getUsername() + ", " + user.toString());
         return new TracerUserPrincipal(user);
     }
 }

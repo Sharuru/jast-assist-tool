@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>JFT - 重定向</title>
+    <meta charset="UTF-8"/>
+
+    <th:block th:replace="fragments/common :: global"/>
+</head>
+<body>
+<!-- content -->
+<div class="container" style="padding-top: 65px;">
+
+    <div class="page-header">
+        <h1><span th:text="${sysmsg}"></span>
+            <small>JAST FILE TRACER</small>
+        </h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            如未自动跳转，请点击<a id="back-link" href="#">此处</a>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        setTimeout(function () {
+            parent.history.back();
+        }, 3000);
+
+        $('#back-link').click(function () {
+            parent.history.back();
+        });
+    });
+
+</script>
+</body>
+</html>
