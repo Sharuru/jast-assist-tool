@@ -20,7 +20,7 @@
         </h1>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <div class="panel-title">仓库配置</div>
         </div>
@@ -29,28 +29,49 @@
             <form id="repo-config-form" th:action="@{/admin/repo}" th:object="${repoSettingForm}" method="post">
                 <div class="form-group">
                     <label for="repo-address-input">远程仓库地址</label>
-                    <input type="text" class="form-control" id="repo-address-input" name="repoAddress" required="required" placeholder="http://example.com/project.git"
+                    <input type="text" class="form-control" id="repo-address-input" name="repoAddress"
+                           required="required" placeholder="http://example.com/project.git"
                            th:field="*{repoAddress}"/>
                 </div>
                 <div class="form-group">
                     <label for="repo-branch-input">跟踪分支</label>
-                    <input type="text" class="form-control" id="repo-branch-input" name="repoBranch" placeholder="master"
+                    <input type="text" class="form-control" id="repo-branch-input" name="repoBranch"
+                           placeholder="master"
                            th:field="*{repoBranch}"/>
                 </div>
                 <div class="form-group">
                     <label for="repo-local-path-input">本地工作目录</label>
-                    <input type="text" class="form-control" id="repo-local-path-input" name="repoLocalPath" required="required" placeholder="D:\local"
+                    <input type="text" class="form-control" id="repo-local-path-input" name="repoLocalPath"
+                           required="required" placeholder="D:\local"
                            th:field="*{repoLocalPath}"/>
                 </div>
                 <button type="submit" id="save-repo-setting-button" class="btn btn-default btn-primary">保存仓库配置</button>
-                <span class="padding-left:20px;" id="save-repo-setting-result"></span>
             </form>
         </div>
     </div>
 
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            <div class="panel-title">操作区</div>
+        </div>
+        <div class="panel-body">
+            <button type="button" id="initialize-button" class="btn btn-default btn-warning">拉取最新变更（保留数据）</button>
+            <button type="button" id="initialize-purge-button" class="btn btn-default btn-danger">初始化系统（清除所有数据）</button>
+        </div>
+    </div>
+
+
 </div>
 <script>
     $(function () {
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $(document).ajaxSend(function(e,xhr,options){
+            xhr.setRequestHeader(header,token);
+        });
+
         $('#repo-config-form').on('submit', function (e) {
             $('#save-repo-setting-result').text('Saving...');
             $.ajax({
@@ -60,12 +81,45 @@
             })
                 .done(function (data) {
                     if (data === true) {
-                        $('#save-repo-setting-result').text("SUCCESS!");
+                        swal("成功","数据保存成功","success");
                     } else {
-                        $('#save-repo-setting-result').text('FAILED!');
+                        swal("失败","数据保存失败","error");
                     }
                 });
             e.preventDefault();
+        });
+
+        $('#initialize-button').click(function (e) {
+            swal({
+                    title: "确定",
+                    text: "将要执行的操作：拉取最新变更（保留数据）",
+                    type: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: "取消",
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "确认",
+                    closeOnConfirm: false,
+                    closeOnCancel: false,
+                    showLoaderOnConfirm: true
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/admin/repo/refresh',
+                            data: $(this).serialize()
+                        })
+                            .done(function (data) {
+                                if (data === true) {
+                                    swal("成功", "拉取操作执行成功", "success");
+                                } else {
+                                    swal("失败","拉取操作执行失败","error");
+                                }
+                            });
+                    } else {
+                        swal("取消", "拉取操作已取消", "error");
+                    }
+                });
         });
     });
 </script>

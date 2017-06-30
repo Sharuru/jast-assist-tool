@@ -1,6 +1,7 @@
 package self.srr.jast.web;
 
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +31,11 @@ public class AdminController {
     @Autowired
     SettingService settingService;
 
+    @Autowired
+    GitService gitService;
+
     @RequestMapping(value = "", method = RequestMethod.GET)
-    String admin(Model model, HttpServletRequest request) {
+    String admin(Model model) {
         model.addAttribute("page", "admin");
         RepoSettingForm repoSettingForm = settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
         repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
@@ -51,6 +55,17 @@ public class AdminController {
             }
             return settingService.saveConfig(TracerConstant.SETTING_GROUP_GIT, repoSettingForm);
         }
+    }
 
+    @RequestMapping(value = "/repo/refresh", method = RequestMethod.POST)
+    @ResponseBody
+    Boolean repoRefresh() {
+        try {
+            gitService.clone(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

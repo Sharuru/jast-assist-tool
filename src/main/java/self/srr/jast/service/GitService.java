@@ -2,10 +2,11 @@ package self.srr.jast.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
+import self.srr.jast.form.RepoSettingForm;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Git service
@@ -17,27 +18,18 @@ import java.io.IOException;
 public class GitService {
 
 
-    public Object clone() {
-        String url = "https://github.com/Sharuru/jast-file-tracer.git";
+    public void clone(RepoSettingForm repoSettingForm) throws GitAPIException {
 
-        File localPath = null;
-        try {
-            localPath = File.createTempFile("d:\\TempRepo","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(!localPath.delete()){
-            System.out.println("ERROR");
-        }
-        try{
-            Git result = Git.cloneRepository()
-                    .setURI(url)
-                    .setDirectory(localPath)
-                    .call();
-            result.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+        File localPath = new File(repoSettingForm.getRepoLocalPath().replace("\\", "\\\\"));
+
+        localPath.delete();
+
+        Git result = Git.cloneRepository()
+                .setURI(repoSettingForm.getRepoAddress())
+                .setBranch(repoSettingForm.getRepoBranch())
+                .setDirectory(localPath)
+                .call();
+
+        result.close();
     }
 }
