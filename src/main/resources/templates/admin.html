@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>JFT - 系统管理</title>
+    <meta charset="UTF-8"/>
+
+    <th:block th:replace="fragments/common :: global"/>
+</head>
+
+<body>
+<!-- navigation -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- content -->
+<div class="container" style="padding-top: 65px;">
+
+    <div class="page-header">
+        <h1>系统管理
+            <small>SYSTEM MANAGEMENT</small>
+        </h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">仓库配置</div>
+        </div>
+        <div class="panel-body">
+            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.form.RepoSettingForm"*/-->
+            <form id="repo-config-form" th:action="@{/admin/repo}" th:object="${repoSettingForm}" method="post">
+                <div class="form-group">
+                    <label for="repo-address-input">远程仓库地址</label>
+                    <input type="text" class="form-control" id="repo-address-input" name="repoAddress" required="required" placeholder="http://example.com/project.git"
+                           th:field="*{repoAddress}"/>
+                </div>
+                <div class="form-group">
+                    <label for="repo-branch-input">跟踪分支</label>
+                    <input type="text" class="form-control" id="repo-branch-input" name="repoBranch" placeholder="master"
+                           th:field="*{repoBranch}"/>
+                </div>
+                <div class="form-group">
+                    <label for="repo-local-path-input">本地工作目录</label>
+                    <input type="text" class="form-control" id="repo-local-path-input" name="repoLocalPath" required="required" placeholder="D:\local"
+                           th:field="*{repoLocalPath}"/>
+                </div>
+                <button type="submit" id="save-repo-setting-button" class="btn btn-default btn-primary">保存仓库配置</button>
+                <span class="padding-left:20px;" id="save-repo-setting-result"></span>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $('#repo-config-form').on('submit', function (e) {
+            $('#save-repo-setting-result').text('Saving...');
+            $.ajax({
+                type: 'POST',
+                url: '/admin/repo',
+                data: $(this).serialize()
+            })
+                .done(function (data) {
+                    if (data === true) {
+                        $('#save-repo-setting-result').text("SUCCESS!");
+                    } else {
+                        $('#save-repo-setting-result').text('FAILED!');
+                    }
+                });
+            e.preventDefault();
+        });
+    });
+</script>
+
+
+<!-- footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>

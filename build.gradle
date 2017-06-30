@@ -34,7 +34,10 @@ dependencies {
     compile('org.webjars:jquery:3.2.0')
     compile('org.webjars:bootstrap:3.3.7-1')
     compile('org.webjars:jquery-validation:1.16.0')
-	runtime('org.springframework.boot:spring-boot-devtools')
+    compile('org.eclipse.jgit:org.eclipse.jgit:4.8.0.201706111038-r')
+    compile('com.google.code.gson:gson:2.8.1')
+
+    runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 	compileOnly('org.projectlombok:lombok')
