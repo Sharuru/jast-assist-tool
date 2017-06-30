@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * Created by Sharuru on 2017/06/30.
  */
 @Data
-public class RepoSettingForm extends BasicForm {
+public class RepoSettingForm extends Object {
 
     @NotBlank
     private String repoAddress;

@@ -51,7 +51,7 @@ public class TblTracerUser implements Serializable {
     private Date updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private Set<TblTracerRole> roles = new HashSet<>();
 
     public TblTracerUser() {

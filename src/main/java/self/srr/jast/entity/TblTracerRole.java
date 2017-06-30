@@ -27,7 +27,8 @@ public class TblTracerRole implements Serializable {
     @SequenceGenerator(name = "seq", sequenceName = "tracer_user_id_seq")
     private Long id;
 
-    private String username;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "role_name")
     private String rollName;
