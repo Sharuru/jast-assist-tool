@@ -1,4 +1,4 @@
-package self.srr.jast.entity;
+package self.srr.jast.model.entity;
 
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;

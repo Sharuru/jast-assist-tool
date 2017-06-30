@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import self.srr.jast.entity.TblTracerSetting;
+import self.srr.jast.model.entity.TblTracerSetting;
 import self.srr.jast.repository.TblTracerSettingRepository;
 
 /**
@@ -19,7 +19,7 @@ public class SettingService {
     @Autowired
     TblTracerSettingRepository tblTracerSettingRepository;
 
-    public boolean saveConfig(String settingGroup, Object settingForm) {
+    public TblTracerSetting saveConfig(String settingGroup, Object settingForm) {
         // serialize
         TblTracerSetting setting = tblTracerSettingRepository.findOneBySettingGroup(settingGroup);
         if (setting == null) {
@@ -28,8 +28,8 @@ public class SettingService {
         setting.setSettingGroup(settingGroup);
         setting.setSettings(new Gson().toJson(settingForm));
         setting = tblTracerSettingRepository.save(setting);
-        log.info("Get config: " + settingGroup + ": " + setting.toString());
-        return true;
+        log.info("Set config: " + settingGroup + ": " + setting.toString());
+        return setting;
     }
 
     public <T> T getConfig(String settingGroup, Class<T> target) {

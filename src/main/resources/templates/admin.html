@@ -25,7 +25,7 @@
             <div class="panel-title">仓库配置</div>
         </div>
         <div class="panel-body">
-            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.form.RepoSettingForm"*/-->
+            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.model.form.RepoSettingForm"*/-->
             <form id="repo-config-form" th:action="@{/admin/repo}" th:object="${repoSettingForm}" method="post">
                 <div class="form-group">
                     <label for="repo-address-input">远程仓库地址</label>
@@ -55,7 +55,7 @@
             <div class="panel-title">操作区</div>
         </div>
         <div class="panel-body">
-            <button type="button" id="initialize-button" class="btn btn-default btn-warning">拉取最新变更（保留数据）</button>
+            <button type="button" id="initialize-button" class="btn btn-default btn-warning">初始化系统（保留数据）</button>
             <button type="button" id="initialize-purge-button" class="btn btn-default btn-danger">初始化系统（清除所有数据）</button>
         </div>
     </div>
@@ -68,22 +68,37 @@
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
 
-        $(document).ajaxSend(function(e,xhr,options){
-            xhr.setRequestHeader(header,token);
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
         });
 
         $('#repo-config-form').on('submit', function (e) {
             $('#save-repo-setting-result').text('Saving...');
             $.ajax({
                 type: 'POST',
-                url: '/admin/repo',
+                url: '/admin/setting/repo',
                 data: $(this).serialize()
             })
                 .done(function (data) {
-                    if (data === true) {
-                        swal("成功","数据保存成功","success");
+                    if (data.status === true) {
+                        swal({
+                            title: "成功",
+                            text: "数据保存成功",
+                            type: "success"
+
+                        }, function () {
+                            setTimeout(function () {
+                                location.reload();
+                            }, 200);
+
+                        });
                     } else {
-                        swal("失败","数据保存失败","error");
+                        swal({
+                            title: "失败",
+                            text: "数据保存失败 <br/>" + data.message,
+                            type: "error",
+                            html: true
+                        });
                     }
                 });
             e.preventDefault();
@@ -92,7 +107,7 @@
         $('#initialize-button').click(function (e) {
             swal({
                     title: "确定",
-                    text: "将要执行的操作：拉取最新变更（保留数据）",
+                    text: "将要执行的操作：初始化系统（保留数据）",
                     type: "warning",
                     showCancelButton: true,
                     cancelButtonText: "取消",
@@ -110,14 +125,19 @@
                             data: $(this).serialize()
                         })
                             .done(function (data) {
-                                if (data === true) {
-                                    swal("成功", "拉取操作执行成功", "success");
+                                if (data.status === true) {
+                                    swal("成功", "初始化操作执行成功", "success");
                                 } else {
-                                    swal("失败","拉取操作执行失败","error");
+                                    swal({
+                                        title: "失败",
+                                        text: "初始化操作执行失败 <br/>" + data.message,
+                                        type: "error",
+                                        html: true
+                                    });
                                 }
                             });
                     } else {
-                        swal("取消", "拉取操作已取消", "error");
+                        swal("取消", "初始化操作已取消", "error");
                     }
                 });
         });

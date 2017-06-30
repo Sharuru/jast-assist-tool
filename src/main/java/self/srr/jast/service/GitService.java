@@ -5,7 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
-import self.srr.jast.form.RepoSettingForm;
+import self.srr.jast.model.form.RepoSettingForm;
 
 import java.io.File;
 import java.io.IOException;
