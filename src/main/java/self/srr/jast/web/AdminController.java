@@ -9,11 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import self.srr.jast.common.TracerConstant;
+import self.srr.jast.facade.AdminFacade;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
 import self.srr.jast.service.GitService;
-import self.srr.jast.service.SettingService;
+
+import java.util.List;
 
 /**
  * Admin controller
@@ -26,7 +27,7 @@ import self.srr.jast.service.SettingService;
 public class AdminController {
 
     @Autowired
-    SettingService settingService;
+    AdminFacade adminFacade;
 
     @Autowired
     GitService gitService;
@@ -34,9 +35,7 @@ public class AdminController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     String admin(Model model) {
         model.addAttribute("page", "admin");
-        RepoSettingForm repoSettingForm = settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
-        repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
-        model.addAttribute("repoSettingForm", repoSettingForm);
+        model.addAttribute("repoSettingForm", adminFacade.getRepoSettingForm());
         return "admin";
     }
 
@@ -49,20 +48,8 @@ public class AdminController {
             baseResponse.setStatus(false);
             baseResponse.setMessage("bingingResult.hasErrors()");
         } else {
-            repoSettingForm = repoSettingForm.trim();
-            if (repoSettingForm.getRepoBranch().isEmpty()) {
-                repoSettingForm.setRepoBranch(TracerConstant.DEFAULT_BRANCH);
+                baseResponse = adminFacade.saveRepoSettingResponse(repoSettingForm));
             }
-            try {
-                settingService.saveConfig(TracerConstant.SETTING_GROUP_GIT, repoSettingForm);
-                baseResponse.setStatus(true);
-            } catch (Exception e) {
-                log.error("repoSetting has errors: " + e.getMessage());
-                e.printStackTrace();
-                baseResponse.setStatus(false);
-                baseResponse.setMessage(e.getMessage());
-            }
-        }
         return baseResponse;
     }
 
@@ -71,7 +58,8 @@ public class AdminController {
     BaseResponse repoRefresh() {
         BaseResponse baseResponse = new BaseResponse();
         try {
-            gitService.clone(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
+            //gitService.clone(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
+            List<String> fileList = gitService.getGitFileList("D:\\JFTtest", "refs/heads/master");
             baseResponse.setStatus(true);
         } catch (Exception e) {
             log.error("repoRefresh has errors: " + e.getMessage());
