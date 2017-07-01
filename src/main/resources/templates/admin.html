@@ -86,12 +86,10 @@
                             text: "数据保存成功",
                             type: "success"
 
-                        }, function () {
-                            setTimeout(function () {
-                                location.reload();
-                            }, 200);
-
                         });
+                        $('#repo-address-input').val(data.repoAddress);
+                        $('#repo-branch-input').val(data.repoBranch);
+                        $('#repo-local-path-input').val(data.repoLocalPath);
                     } else {
                         swal({
                             title: "失败",

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import self.srr.jast.facade.AdminFacade;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
+import self.srr.jast.model.response.RepoSettingResponse;
 import self.srr.jast.service.GitService;
 
 import java.util.List;
@@ -41,23 +42,24 @@ public class AdminController {
 
     @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)
     @ResponseBody
-    BaseResponse repoSetting(@Validated RepoSettingForm repoSettingForm, BindingResult bindingResult) {
-        BaseResponse baseResponse = new BaseResponse();
+    RepoSettingResponse repoSetting(@Validated RepoSettingForm repoSettingForm, BindingResult bindingResult) {
+        RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
         if (bindingResult.hasErrors()) {
             log.info("repoSettingForm has errors: " + repoSettingForm.toString());
-            baseResponse.setStatus(false);
-            baseResponse.setMessage("bingingResult.hasErrors()");
+            repoSettingResponse.setStatus(false);
+            repoSettingResponse.setMessage("bingingResult.hasErrors()");
         } else {
-            baseResponse = adminFacade.saveRepoSettingResponse(repoSettingForm);
+            repoSettingResponse = adminFacade.saveRepoSettingResponse(repoSettingForm);
         }
-        return baseResponse;
+        return repoSettingResponse;
     }
 
     @RequestMapping(value = "/repo/refresh", method = RequestMethod.POST)
     @ResponseBody
     BaseResponse repoRefresh() {
         BaseResponse baseResponse = new BaseResponse();
-        adminFacade.refreshRepo(adminFacade.getRepoSettingForm());
+
+        baseResponse = adminFacade.refreshRepo(adminFacade.getRepoSettingForm());
         //gitService.cloneRepoToLocal(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
         //List<String> fileList = gitService.getGitFileList("D:\\JFTtest", "refs/heads/master");
         //baseResponse.setStatus(true);

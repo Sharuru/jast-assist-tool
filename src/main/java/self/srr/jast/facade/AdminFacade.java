@@ -4,8 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import self.srr.jast.common.TracerConstant;
+import self.srr.jast.model.entity.TblTracerSetting;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
+import self.srr.jast.model.response.RepoSettingResponse;
 import self.srr.jast.service.GitService;
 import self.srr.jast.service.SettingService;
 
@@ -33,8 +35,8 @@ public class AdminFacade {
         return repoSettingForm;
     }
 
-    public BaseResponse saveRepoSettingResponse(RepoSettingForm reposettingForm) {
-        BaseResponse baseResponse = new BaseResponse();
+    public RepoSettingResponse saveRepoSettingResponse(RepoSettingForm reposettingForm) {
+        RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
 
         reposettingForm = reposettingForm.trim();
         // setting default branch
@@ -44,14 +46,17 @@ public class AdminFacade {
         // persist to database
         try {
             settingService.saveConfig(TracerConstant.SETTING_GROUP_GIT, reposettingForm);
+            repoSettingResponse.setRepoAddress(reposettingForm.getRepoAddress());
+            repoSettingResponse.setRepoBranch(reposettingForm.getRepoBranch());
+            repoSettingResponse.setRepoLocalPath(reposettingForm.getRepoLocalPath());
         } catch (Exception e) {
             log.error("Error happened in `saveRepoSettingResponse`: " + e.getMessage());
             e.printStackTrace();
-            baseResponse.setStatus(false);
-            baseResponse.setMessage(e.getMessage());
+            repoSettingResponse.setStatus(false);
+            repoSettingResponse.setMessage(e.getMessage());
         }
 
-        return baseResponse;
+        return repoSettingResponse;
     }
 
     public BaseResponse refreshRepo(RepoSettingForm repoSettingForm) {
