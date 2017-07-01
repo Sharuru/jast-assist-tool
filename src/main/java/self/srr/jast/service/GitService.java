@@ -30,7 +30,7 @@ import java.util.List;
 public class GitService {
 
 
-    public void clone(RepoSettingForm repoSettingForm) throws GitAPIException, IOException {
+    public void cloneRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
 
         File localPath = new File(repoSettingForm.getRepoLocalPath().replace("\\", "\\\\"));
 
@@ -38,61 +38,56 @@ public class GitService {
 
         log.info("Clone repo from: " + repoSettingForm.getRepoAddress() + " at branch: " + repoSettingForm.getRepoBranch() + " to: " + localPath);
 
-        Git result = Git.cloneRepository()
+        Git git = Git.cloneRepository()
                 .setURI(repoSettingForm.getRepoAddress())
                 .setBranch(repoSettingForm.getRepoBranch())
                 .setDirectory(localPath)
                 .call();
 
-        result.close();
+        git.close();
     }
 
-    public List<String> getGitFileList(String path, String ref) {
+    public List<String> getGitFileList(String path, String refMark) throws Exception {
 
         List<String> fileList = new ArrayList<>();
 
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
 
-        try {
-            Repository repository = builder.setGitDir(new File(path + "\\.git"))
-                    .readEnvironment()
-                    .findGitDir()
-                    .build();
+        Repository repository = builder.setGitDir(new File(path + "\\.git"))
+                .readEnvironment()
+                .findGitDir()
+                .build();
 
-            log.info("Set repo at: " + repository.getDirectory());
+        log.info("Set repo at: " + repository.getDirectory());
 
-            Ref head = repository.findRef(ref);
-            log.info("Ref of " + ref + ": " + head + ": " + head.getName() + " - " + head.getObjectId().getName());
+        Ref ref = repository.findRef(refMark);
 
-            RevWalk walk = new RevWalk(repository);
-            RevCommit commit = walk.parseCommit(head.getObjectId());
-            System.out.println("Commit: " + commit);
+        RevWalk walk = new RevWalk(repository);
+        RevCommit commit = walk.parseCommit(ref.getObjectId());
+        log.info("Ref commit id is: " + commit);
 
-            RevTree tree = walk.parseTree(commit.getTree().getId());
-            System.out.println("Found Tree: " + tree);
+        RevTree tree = walk.parseTree(commit.getTree().getId());
+        log.info("Ref commit's tree id is: " + tree);
 
-            TreeWalk treeWalk = new TreeWalk(repository);
+        TreeWalk treeWalk = new TreeWalk(repository);
 
-            treeWalk.addTree(tree);
-            treeWalk.setRecursive(false);
+        treeWalk.addTree(tree);
+        treeWalk.setRecursive(false);
 
-            while (treeWalk.next()) {
-                if (treeWalk.isSubtree()) {
-                    log.info("Visiting dir: " + treeWalk.getPathString());
-                    treeWalk.enterSubtree();
-                } else {
-                    fileList.add(treeWalk.getPathString());
-                    log.info("Add file: " + treeWalk.getPathString());
-                }
+        log.info("Making file list start.");
+        while (treeWalk.next()) {
+            if (treeWalk.isSubtree()) {
+                log.info("Visiting dir: " + treeWalk.getPathString());
+                treeWalk.enterSubtree();
+            } else {
+                fileList.add(treeWalk.getPathString());
+                log.info("Add file: " + treeWalk.getPathString());
             }
-
-            walk.dispose();
-            repository.close();
-
-        } catch (Exception e) {
-            log.error("Error happened in `getGitFileList`: " + e.getMessage());
-            e.printStackTrace();
         }
+        log.info("Making file list complete.");
+
+        walk.dispose();
+        repository.close();
 
         return fileList;
     }

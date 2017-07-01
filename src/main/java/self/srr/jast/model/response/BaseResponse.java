@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class BaseResponse {
 
-    boolean status;
+    boolean status = true;
 
-    String message;
+    String message = "Success";
 }

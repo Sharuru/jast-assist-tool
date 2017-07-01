@@ -48,8 +48,8 @@ public class AdminController {
             baseResponse.setStatus(false);
             baseResponse.setMessage("bingingResult.hasErrors()");
         } else {
-                baseResponse = adminFacade.saveRepoSettingResponse(repoSettingForm));
-            }
+            baseResponse = adminFacade.saveRepoSettingResponse(repoSettingForm);
+        }
         return baseResponse;
     }
 
@@ -57,16 +57,11 @@ public class AdminController {
     @ResponseBody
     BaseResponse repoRefresh() {
         BaseResponse baseResponse = new BaseResponse();
-        try {
-            //gitService.clone(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
-            List<String> fileList = gitService.getGitFileList("D:\\JFTtest", "refs/heads/master");
-            baseResponse.setStatus(true);
-        } catch (Exception e) {
-            log.error("repoRefresh has errors: " + e.getMessage());
-            e.printStackTrace();
-            baseResponse.setStatus(false);
-            baseResponse.setMessage(e.getMessage());
-        }
+        adminFacade.refreshRepo(adminFacade.getRepoSettingForm());
+        //gitService.cloneRepoToLocal(settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
+        //List<String> fileList = gitService.getGitFileList("D:\\JFTtest", "refs/heads/master");
+        //baseResponse.setStatus(true);
+
         return baseResponse;
 
     }

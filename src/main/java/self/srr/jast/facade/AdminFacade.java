@@ -1,13 +1,16 @@
 package self.srr.jast.facade;
 
-import jdk.internal.instrumentation.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import self.srr.jast.common.TracerConstant;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
+import self.srr.jast.service.GitService;
 import self.srr.jast.service.SettingService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Admin facade
@@ -21,31 +24,56 @@ public class AdminFacade {
     @Autowired
     SettingService settingService;
 
-    public RepoSettingForm getRepoSettingForm(){
+    @Autowired
+    GitService gitService;
+
+    public RepoSettingForm getRepoSettingForm() {
         RepoSettingForm repoSettingForm = settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
         repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
         return repoSettingForm;
     }
 
-
-    public BaseResponse saveRepoSettingResponse(RepoSettingForm reposettingForm){
+    public BaseResponse saveRepoSettingResponse(RepoSettingForm reposettingForm) {
         BaseResponse baseResponse = new BaseResponse();
 
         reposettingForm = reposettingForm.trim();
         // setting default branch
-        if(reposettingForm.getRepoBranch().isEmpty()){
+        if (reposettingForm.getRepoBranch().isEmpty()) {
             reposettingForm.setRepoBranch(TracerConstant.DEFAULT_BRANCH);
         }
         // persist to database
-        try{
+        try {
             settingService.saveConfig(TracerConstant.SETTING_GROUP_GIT, reposettingForm);
-            baseResponse.setStatus(true);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Error happened in `saveRepoSettingResponse`: " + e.getMessage());
             e.printStackTrace();
             baseResponse.setStatus(false);
             baseResponse.setMessage(e.getMessage());
         }
+
+        return baseResponse;
+    }
+
+    public BaseResponse refreshRepo(RepoSettingForm repoSettingForm) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        List<String> fileNames = new ArrayList<>();
+
+        try {
+            // clone then refresh database
+            gitService.cloneRepoToLocal(repoSettingForm);
+            fileNames = gitService.getGitFileList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
+            for (String fileName : fileNames) {
+
+            }
+
+        } catch (Exception e) {
+            log.error("Error happened in `refreshRepo`: " + e.getMessage());
+            e.printStackTrace();
+            baseResponse.setStatus(false);
+            baseResponse.setMessage(e.getMessage());
+        }
+
 
         return baseResponse;
     }
