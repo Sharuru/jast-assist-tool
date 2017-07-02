@@ -82,8 +82,13 @@ public class GitService {
                 treeWalk.enterSubtree();
             } else {
                 GitFile gitFile = new GitFile();
-                gitFile.setFileName("FILE");
-                gitFile.setFilePath(treeWalk.getPathString());
+
+                String filePath = treeWalk.getPathString();
+                int fileNameHead = filePath.lastIndexOf("/");
+                fileNameHead = fileNameHead == -1 ? 0 : fileNameHead + 1;
+
+                gitFile.setFileName(filePath.substring(fileNameHead));
+                gitFile.setFilePath(filePath);
                 gitFile.setRevisionId(commit.getId().getName());
                 fileList.add(gitFile);
                 log.info("Add file: " + treeWalk.getPathString());

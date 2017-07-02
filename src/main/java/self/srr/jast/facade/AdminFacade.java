@@ -75,7 +75,7 @@ public class AdminFacade {
             for (GitFile file : gitFiles) {
                 if (!tracerService.isFileInTrack(file.getFilePath())) {
                     // add to track
-                    tracerService.addFiletoTrackQueue(file, true);
+                    tracerService.addFileToTrackQueue(file);
                 }
             }
 

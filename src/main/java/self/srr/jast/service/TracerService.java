@@ -3,13 +3,13 @@ package self.srr.jast.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import self.srr.jast.common.TracerConstant;
 import self.srr.jast.model.GitFile;
 import self.srr.jast.model.entity.TblTracerFile;
 import self.srr.jast.model.entity.TblTracerHistory;
 import self.srr.jast.repository.TblTracerFileRepository;
 import self.srr.jast.repository.TblTracerHistoryRepository;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -31,20 +31,22 @@ public class TracerService {
         return !(tblTracerFileRepository.findOneByFilePath(filePath) == null);
     }
 
-    public void addFiletoTrackQueue(GitFile gitFile, Boolean isFirst) {
+    public void addFileToTrackQueue(GitFile gitFile) {
         TblTracerFile tblTracerFile = new TblTracerFile();
+
         tblTracerFile.setFileName(gitFile.getFileName());
         tblTracerFile.setFilePath(gitFile.getFilePath());
-        tblTracerFile.setFileStatus("INITIAL_IMPORT");
-        tblTracerFile.setReviewStatus("NOT_REVIEWED");
-        tblTracerFile.setDeliveryStatus("WON'T_DELIVERIED");
+        tblTracerFile.setFileStatus(TracerConstant.FILE_STATUS_INITIALIZE);
+        tblTracerFile.setReviewStatus(TracerConstant.REVIEW_STATUS_NOT_REVIEWED);
+        tblTracerFile.setDeliveryStatus(TracerConstant.DELIVERY_STATUS_WONT_DELIVER);
         tblTracerFile = tblTracerFileRepository.save(tblTracerFile);
 
         TblTracerHistory tblTracerHistory = new TblTracerHistory();
+
         tblTracerHistory.setFileId(tblTracerFile.getId());
         tblTracerHistory.setRevisionId(gitFile.getRevisionId());
-        tblTracerHistory.setOperationTask("INITIAL_IMPORT");
-        tblTracerHistory.setOperator(1L);
+        tblTracerHistory.setOperationTask(TracerConstant.OPERATION_IMPORT);
+        tblTracerHistory.setOperator(TracerConstant.SYSTEM_OPERATOR);
         tblTracerHistory.setOperationTime(new Date());
 
         tblTracerHistoryRepository.save(tblTracerHistory);
