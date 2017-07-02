@@ -13,6 +13,7 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.stereotype.Service;
+import self.srr.jast.model.GitFile;
 import self.srr.jast.model.form.RepoSettingForm;
 
 import java.io.File;
@@ -47,9 +48,9 @@ public class GitService {
         git.close();
     }
 
-    public List<String> getGitFileList(String path, String refMark) throws Exception {
+    public List<GitFile> getGitFilePathList(String path, String refMark) throws Exception {
 
-        List<String> fileList = new ArrayList<>();
+        List<GitFile> fileList = new ArrayList<>();
 
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
 
@@ -80,7 +81,11 @@ public class GitService {
                 log.info("Visiting dir: " + treeWalk.getPathString());
                 treeWalk.enterSubtree();
             } else {
-                fileList.add(treeWalk.getPathString());
+                GitFile gitFile = new GitFile();
+                gitFile.setFileName("FILE");
+                gitFile.setFilePath(treeWalk.getPathString());
+                gitFile.setRevisionId(commit.getId().getName());
+                fileList.add(gitFile);
                 log.info("Add file: " + treeWalk.getPathString());
             }
         }

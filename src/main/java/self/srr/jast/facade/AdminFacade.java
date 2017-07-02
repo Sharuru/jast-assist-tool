@@ -4,12 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import self.srr.jast.common.TracerConstant;
-import self.srr.jast.model.entity.TblTracerSetting;
+import self.srr.jast.model.GitFile;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
 import self.srr.jast.model.response.RepoSettingResponse;
 import self.srr.jast.service.GitService;
 import self.srr.jast.service.SettingService;
+import self.srr.jast.service.TracerService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +30,11 @@ public class AdminFacade {
     @Autowired
     GitService gitService;
 
+    @Autowired
+    TracerService tracerService;
+
     public RepoSettingForm getRepoSettingForm() {
-        RepoSettingForm repoSettingForm = settingService.getConfig(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
+        RepoSettingForm repoSettingForm = settingService.getSetting(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
         repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
         return repoSettingForm;
     }
@@ -45,7 +49,7 @@ public class AdminFacade {
         }
         // persist to database
         try {
-            settingService.saveConfig(TracerConstant.SETTING_GROUP_GIT, reposettingForm);
+            settingService.saveSetting(TracerConstant.SETTING_GROUP_GIT, reposettingForm);
             repoSettingResponse.setRepoAddress(reposettingForm.getRepoAddress());
             repoSettingResponse.setRepoBranch(reposettingForm.getRepoBranch());
             repoSettingResponse.setRepoLocalPath(reposettingForm.getRepoLocalPath());
@@ -62,14 +66,17 @@ public class AdminFacade {
     public BaseResponse refreshRepo(RepoSettingForm repoSettingForm) {
         BaseResponse baseResponse = new BaseResponse();
 
-        List<String> fileNames = new ArrayList<>();
+        List<GitFile> gitFiles = new ArrayList<>();
 
         try {
             // clone then refresh database
             gitService.cloneRepoToLocal(repoSettingForm);
-            fileNames = gitService.getGitFileList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
-            for (String fileName : fileNames) {
-
+            gitFiles = gitService.getGitFilePathList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
+            for (GitFile file : gitFiles) {
+                if (!tracerService.isFileInTrack(file.getFilePath())) {
+                    // add to track
+                    tracerService.addFiletoTrackQueue(file, true);
+                }
             }
 
         } catch (Exception e) {

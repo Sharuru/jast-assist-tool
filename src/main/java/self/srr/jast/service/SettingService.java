@@ -19,7 +19,7 @@ public class SettingService {
     @Autowired
     TblTracerSettingRepository tblTracerSettingRepository;
 
-    public TblTracerSetting saveConfig(String settingGroup, Object settingForm) {
+    public TblTracerSetting saveSetting(String settingGroup, Object settingForm) {
         // serialize
         TblTracerSetting setting = tblTracerSettingRepository.findOneBySettingGroup(settingGroup);
         if (setting == null) {
@@ -32,7 +32,7 @@ public class SettingService {
         return setting;
     }
 
-    public <T> T getConfig(String settingGroup, Class<T> target) {
+    public <T> T getSetting(String settingGroup, Class<T> target) {
         TblTracerSetting setting = tblTracerSettingRepository.findOneBySettingGroup(settingGroup);
         if (setting != null) {
             log.info("Get config: " + settingGroup + ":" + setting.toString());
