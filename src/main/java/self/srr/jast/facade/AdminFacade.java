@@ -69,8 +69,8 @@ public class AdminFacade {
         List<GitFile> gitFiles = new ArrayList<>();
 
         try {
-            // clone then refresh database
-            gitService.cloneRepoToLocal(repoSettingForm);
+            // refresh local repo
+            gitService.refreshLocalRepo(repoSettingForm);
             gitFiles = gitService.getGitFilePathList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
             for (GitFile file : gitFiles) {
                 if (!tracerService.isFileInTrack(file.getFilePath())) {

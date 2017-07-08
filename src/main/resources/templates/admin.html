@@ -55,7 +55,7 @@
             <div class="panel-title">操作区</div>
         </div>
         <div class="panel-body">
-            <button type="button" id="initialize-button" class="btn btn-default btn-warning">初始化系统（保留数据）</button>
+            <button type="button" id="repo-refresh-button" class="btn btn-default btn-warning">刷新仓库状态</button>
             <button type="button" id="initialize-purge-button" class="btn btn-default btn-danger">初始化系统（清除所有数据）</button>
         </div>
     </div>
@@ -102,10 +102,10 @@
             e.preventDefault();
         });
 
-        $('#initialize-button').click(function (e) {
+        $('#repo-refresh-button').click(function (e) {
             swal({
                     title: "确定",
-                    text: "将要执行的操作：初始化系统（保留数据）",
+                    text: "将要执行的操作：刷新仓库状态",
                     type: "warning",
                     showCancelButton: true,
                     cancelButtonText: "取消",
@@ -124,18 +124,18 @@
                         })
                             .done(function (data) {
                                 if (data.status === true) {
-                                    swal("成功", "初始化操作执行成功", "success");
+                                    swal("成功", "刷新操作执行成功", "success");
                                 } else {
                                     swal({
                                         title: "失败",
-                                        text: "初始化操作执行失败 <br/>" + data.message,
+                                        text: "刷新操作执行失败 <br/>" + data.message,
                                         type: "error",
                                         html: true
                                     });
                                 }
                             });
                     } else {
-                        swal("取消", "初始化操作已取消", "error");
+                        swal("取消", "刷新操作已取消", "error");
                     }
                 });
         });

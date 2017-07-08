@@ -3,7 +3,9 @@ package self.srr.jast.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -31,9 +33,30 @@ import java.util.List;
 public class GitService {
 
 
-    public void cloneRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
+    public void refreshLocalRepo(RepoSettingForm repoSettingForm) throws Exception {
 
-        File localPath = new File(repoSettingForm.getRepoLocalPath().replace("\\", "\\\\"));
+        try {
+            Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
+            git.close();
+            pullRepoToLocal(repoSettingForm);
+        } catch (Exception e) {
+            cloneRepoToLocal(repoSettingForm);
+        }
+    }
+
+    private void pullRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
+
+        Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
+        git.reset().setMode(ResetCommand.ResetType.HARD).call();
+        git.pull().call();
+        log.info("Pull repo from: " + repoSettingForm.getRepoAddress() + " at branch: " + repoSettingForm.getRepoBranch() + " to: " + repoSettingForm.getRepoLocalPath());
+        git.close();
+    }
+
+
+    private void cloneRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
+
+        File localPath = new File(repoSettingForm.getRepoLocalPath());
 
         FileUtils.deleteDirectory(localPath);
 
