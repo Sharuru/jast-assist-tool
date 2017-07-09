@@ -60,9 +60,6 @@ public class AdminController {
         BaseResponse baseResponse = new BaseResponse();
 
         baseResponse = adminFacade.refreshRepo(adminFacade.getRepoSettingForm());
-        //gitService.cloneRepoToLocal(settingService.getSetting(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class));
-        //List<String> fileList = gitService.getGitFilePathList("D:\\JFTtest", "refs/heads/master");
-        //baseResponse.setStatus(true);
 
         return baseResponse;
 

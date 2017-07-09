@@ -33,6 +33,9 @@ public class TblTracerFile implements Serializable {
     @Column(name = "file_path")
     private String filePath;
 
+    @Column(name = "revision_id")
+    private String revisionId;
+
     private String keyword1;
 
     private String keyword2;

@@ -36,6 +36,7 @@ public class TracerService {
 
         tblTracerFile.setFileName(gitFile.getFileName());
         tblTracerFile.setFilePath(gitFile.getFilePath());
+        tblTracerFile.setRevisionId(gitFile.getRevisionId());
         tblTracerFile.setFileStatus(TracerConstant.FILE_STATUS_INITIALIZE);
         tblTracerFile.setReviewStatus(TracerConstant.REVIEW_STATUS_NOT_REVIEWED);
         tblTracerFile.setDeliveryStatus(TracerConstant.DELIVERY_STATUS_WONT_DELIVER);

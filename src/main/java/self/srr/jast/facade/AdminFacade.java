@@ -72,6 +72,7 @@ public class AdminFacade {
             // refresh local repo
             gitService.refreshLocalRepo(repoSettingForm);
             gitFiles = gitService.getGitFilePathList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
+
             for (GitFile file : gitFiles) {
                 if (!tracerService.isFileInTrack(file.getFilePath())) {
                     // add to track
