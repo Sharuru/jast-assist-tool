@@ -6,40 +6,39 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
- * History entity
+ * User entity
  * <p>
- * Created by Sharuru on 2017/7/2 0002.
+ * Created by Sharuru on 2017/06/29.
  */
 @Data
 @Entity
-@Table(name = "tracer_history")
+@Table(name = "ast_user")
 @EntityListeners(AuditingEntityListener.class)
-public class TblTracerHistory {
+public class TblAstUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "tracer_history_id_seq")
+    @SequenceGenerator(name = "seq", sequenceName = "ast_user_id_seq")
     private Long id;
 
-    @Column(name = "file_id")
-    private Long fileId;
+    private String username;
 
-    @Column(name = "revision_id")
-    private String revisionId;
+    private String nickname;
 
-    @Column(name = "operation_task")
-    private String operationTask;
+    private String password;
 
-    private Long operator;
+    private String email;
 
-    @Column(name = "operation_time")
-    @Temporal(TIMESTAMP)
-    private Date operationTime;
+    private Boolean enable;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -51,4 +50,10 @@ public class TblTracerHistory {
     @Temporal(TIMESTAMP)
     private Date updatedAt;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Set<TblAstRole> roles = new HashSet<>();
+
+    public TblAstUser() {
+    }
 }

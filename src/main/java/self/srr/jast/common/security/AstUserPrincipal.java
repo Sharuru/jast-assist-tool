@@ -3,8 +3,8 @@ package self.srr.jast.common.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import self.srr.jast.model.entity.TblTracerRole;
-import self.srr.jast.model.entity.TblTracerUser;
+import self.srr.jast.model.entity.TblAstRole;
+import self.srr.jast.model.entity.TblAstUser;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,20 +15,20 @@ import java.util.List;
  * <p>
  * Created by Sharuru on 2017/06/29.
  */
-public class TracerUserPrincipal implements UserDetails {
+public class AstUserPrincipal implements UserDetails {
 
 
-    private TblTracerUser user;
+    private TblAstUser user;
 
-    TracerUserPrincipal(TblTracerUser user) {
+    AstUserPrincipal(TblAstUser user) {
         this.user = user;
     }
 
-    public TblTracerUser getUser() {
+    public TblAstUser getUser() {
         return user;
     }
 
-    public void setUser(TblTracerUser user) {
+    public void setUser(TblAstUser user) {
         this.user = user;
     }
 
@@ -36,7 +36,7 @@ public class TracerUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>(user.getRoles().size());
 
-        for (TblTracerRole role : user.getRoles()) {
+        for (TblAstRole role : user.getRoles()) {
             authorities.add(new SimpleGrantedAuthority(role.getRollName()));
         }
 

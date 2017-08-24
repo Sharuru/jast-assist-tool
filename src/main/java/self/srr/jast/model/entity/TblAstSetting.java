@@ -6,39 +6,30 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-
-import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
- * User entity
+ * Setting entity
  * <p>
- * Created by Sharuru on 2017/06/29.
+ * Created by Sharuru on 2017/06/30.
  */
 @Data
 @Entity
-@Table(name = "tracer_user")
+@Table(name = "ast_setting")
 @EntityListeners(AuditingEntityListener.class)
-public class TblTracerUser implements Serializable {
+public class TblAstSetting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "tracer_user_id_seq")
+    @SequenceGenerator(name = "seq", sequenceName = "ast_setting_id_seq")
     private Long id;
 
-    private String username;
+    @Column(name = "setting_group")
+    private String settingGroup;
 
-    private String nickname;
-
-    private String password;
-
-    private String email;
-
-    private Boolean enable;
+    private String settings;
 
     @Column(name = "created_at")
     @CreatedDate
@@ -50,10 +41,7 @@ public class TblTracerUser implements Serializable {
     @Temporal(TIMESTAMP)
     private Date updatedAt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Set<TblTracerRole> roles = new HashSet<>();
+    public TblAstSetting() {
 
-    public TblTracerUser() {
     }
 }

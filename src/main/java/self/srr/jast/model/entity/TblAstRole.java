@@ -18,13 +18,13 @@ import static javax.persistence.TemporalType.TIMESTAMP;
  */
 @Data
 @Entity
-@Table(name = "tracer_role")
+@Table(name = "ast_role")
 @EntityListeners(AuditingEntityListener.class)
-public class TblTracerRole implements Serializable {
+public class TblAstRole implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
-    @SequenceGenerator(name = "seq", sequenceName = "tracer_user_id_seq")
+    @SequenceGenerator(name = "seq", sequenceName = "ast_user_id_seq")
     private Long id;
 
     @Column(name = "user_id")
@@ -43,6 +43,6 @@ public class TblTracerRole implements Serializable {
     @Temporal(TIMESTAMP)
     private Date updatedAt;
 
-    public TblTracerRole() {
+    public TblAstRole() {
     }
 }

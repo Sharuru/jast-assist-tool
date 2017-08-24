@@ -3,7 +3,7 @@ package self.srr.jast.facade;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import self.srr.jast.common.TracerConstant;
+import self.srr.jast.common.AstConstant;
 import self.srr.jast.model.GitFile;
 import self.srr.jast.model.form.RepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
@@ -34,7 +34,7 @@ public class AdminFacade {
     TracerService tracerService;
 
     public RepoSettingForm getRepoSettingForm() {
-        RepoSettingForm repoSettingForm = settingService.getSetting(TracerConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
+        RepoSettingForm repoSettingForm = settingService.getSetting(AstConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
         repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
         return repoSettingForm;
     }
@@ -45,11 +45,11 @@ public class AdminFacade {
         reposettingForm = reposettingForm.trim();
         // setting default branch
         if (reposettingForm.getRepoBranch().isEmpty()) {
-            reposettingForm.setRepoBranch(TracerConstant.DEFAULT_BRANCH);
+            reposettingForm.setRepoBranch(AstConstant.DEFAULT_BRANCH);
         }
         // persist to database
         try {
-            settingService.saveSetting(TracerConstant.SETTING_GROUP_GIT, reposettingForm);
+            settingService.saveSetting(AstConstant.SETTING_GROUP_GIT, reposettingForm);
             repoSettingResponse.setRepoAddress(reposettingForm.getRepoAddress());
             repoSettingResponse.setRepoBranch(reposettingForm.getRepoBranch());
             repoSettingResponse.setRepoLocalPath(reposettingForm.getRepoLocalPath());

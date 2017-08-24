@@ -5,7 +5,7 @@ package self.srr.jast.common;
  *
  * Created by Sharuru on 2017/06/30.
  */
-public class TracerConstant {
+public class AstConstant {
 
     public static final String DEFAULT_BRANCH = "master";
 

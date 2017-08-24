@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import self.srr.jast.common.security.TracerUserDetailService;
+import self.srr.jast.common.security.AstUserDetailService;
 
 /**
  * Security configuration
@@ -20,7 +20,7 @@ import self.srr.jast.common.security.TracerUserDetailService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    TracerUserDetailService tracerUserDetailService;
+    AstUserDetailService astUserDetailService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(tracerUserDetailService);
+        authProvider.setUserDetailsService(astUserDetailService);
         return authProvider;
     }
 

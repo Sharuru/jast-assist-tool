@@ -3,12 +3,12 @@ package self.srr.jast.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import self.srr.jast.common.TracerConstant;
+import self.srr.jast.common.AstConstant;
 import self.srr.jast.model.GitFile;
-import self.srr.jast.model.entity.TblTracerFile;
-import self.srr.jast.model.entity.TblTracerHistory;
-import self.srr.jast.repository.TblTracerFileRepository;
-import self.srr.jast.repository.TblTracerHistoryRepository;
+import self.srr.jast.model.entity.TblAstFile;
+import self.srr.jast.model.entity.TblAstHistory;
+import self.srr.jast.repository.TblAstFileRepository;
+import self.srr.jast.repository.TblAstHistoryRepository;
 
 import java.util.Date;
 
@@ -22,34 +22,34 @@ import java.util.Date;
 public class TracerService {
 
     @Autowired
-    TblTracerFileRepository tblTracerFileRepository;
+    TblAstFileRepository tblAstFileRepository;
 
     @Autowired
-    TblTracerHistoryRepository tblTracerHistoryRepository;
+    TblAstHistoryRepository tblAstHistoryRepository;
 
     public Boolean isFileInTrack(String filePath) {
-        return !(tblTracerFileRepository.findOneByFilePath(filePath) == null);
+        return !(tblAstFileRepository.findOneByFilePath(filePath) == null);
     }
 
     public void addFileToTrackQueue(GitFile gitFile) {
-        TblTracerFile tblTracerFile = new TblTracerFile();
+        TblAstFile tblAstFile = new TblAstFile();
 
-        tblTracerFile.setFileName(gitFile.getFileName());
-        tblTracerFile.setFilePath(gitFile.getFilePath());
-        tblTracerFile.setRevisionId(gitFile.getRevisionId());
-        tblTracerFile.setFileStatus(TracerConstant.FILE_STATUS_INITIALIZE);
-        tblTracerFile.setReviewStatus(TracerConstant.REVIEW_STATUS_NOT_REVIEWED);
-        tblTracerFile.setDeliveryStatus(TracerConstant.DELIVERY_STATUS_WONT_DELIVER);
-        tblTracerFile = tblTracerFileRepository.save(tblTracerFile);
+        tblAstFile.setFileName(gitFile.getFileName());
+        tblAstFile.setFilePath(gitFile.getFilePath());
+        tblAstFile.setRevisionId(gitFile.getRevisionId());
+        tblAstFile.setFileStatus(AstConstant.FILE_STATUS_INITIALIZE);
+        tblAstFile.setReviewStatus(AstConstant.REVIEW_STATUS_NOT_REVIEWED);
+        tblAstFile.setDeliveryStatus(AstConstant.DELIVERY_STATUS_WONT_DELIVER);
+        tblAstFile = tblAstFileRepository.save(tblAstFile);
 
-        TblTracerHistory tblTracerHistory = new TblTracerHistory();
+        TblAstHistory tblAstHistory = new TblAstHistory();
 
-        tblTracerHistory.setFileId(tblTracerFile.getId());
-        tblTracerHistory.setRevisionId(gitFile.getRevisionId());
-        tblTracerHistory.setOperationTask(TracerConstant.OPERATION_IMPORT);
-        tblTracerHistory.setOperator(TracerConstant.SYSTEM_OPERATOR);
-        tblTracerHistory.setOperationTime(new Date());
+        tblAstHistory.setFileId(tblAstFile.getId());
+        tblAstHistory.setRevisionId(gitFile.getRevisionId());
+        tblAstHistory.setOperationTask(AstConstant.OPERATION_IMPORT);
+        tblAstHistory.setOperator(AstConstant.SYSTEM_OPERATOR);
+        tblAstHistory.setOperationTime(new Date());
 
-        tblTracerHistoryRepository.save(tblTracerHistory);
+        tblAstHistoryRepository.save(tblAstHistory);
     }
 }

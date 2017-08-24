@@ -3,7 +3,7 @@ package self.srr.jast.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.stereotype.Repository;
-import self.srr.jast.model.entity.TblTracerUser;
+import self.srr.jast.model.entity.TblAstUser;
 
 /**
  * User repository
@@ -11,7 +11,7 @@ import self.srr.jast.model.entity.TblTracerUser;
  * Created by Sharuru on 2017/06/29.
  */
 @Repository
-public interface TblTracerUserRepository extends JpaRepository<TblTracerUser, Long>, QueryByExampleExecutor<TblTracerUser> {
+public interface TblAstUserRepository extends JpaRepository<TblAstUser, Long>, QueryByExampleExecutor<TblAstUser> {
 
-    TblTracerUser findOneByUsername(String username);
+    TblAstUser findOneByUsername(String username);
 }

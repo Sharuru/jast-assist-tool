@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import self.srr.jast.model.entity.TblTracerUser;
-import self.srr.jast.repository.TblTracerUserRepository;
+import self.srr.jast.model.entity.TblAstUser;
+import self.srr.jast.repository.TblAstUserRepository;
 
 /**
  * Custom user service
@@ -17,18 +17,18 @@ import self.srr.jast.repository.TblTracerUserRepository;
  */
 @Service
 @Slf4j
-public class TracerUserDetailService implements UserDetailsService {
+public class AstUserDetailService implements UserDetailsService {
 
     @Autowired
-    private TblTracerUserRepository tblTracerUserRepository;
+    private TblAstUserRepository tblAstUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        TblTracerUser user = tblTracerUserRepository.findOneByUsername(username);
+        TblAstUser user = tblAstUserRepository.findOneByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
         log.info("Get user: " + user.getUsername() + ", " + user.toString());
-        return new TracerUserPrincipal(user);
+        return new AstUserPrincipal(user);
     }
 }
