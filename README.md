@@ -1,2 +1,2 @@
-# jast-file-tracer
-File tracer tool for project JAST
+# jast-assist-tool
+Assist tool collection for project JAST
