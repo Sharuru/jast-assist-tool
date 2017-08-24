@@ -1,6 +1,7 @@
 package self.srr.jast.model.form;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -10,7 +11,8 @@ import org.hibernate.validator.constraints.NotEmpty;
  * Created by Sharuru on 2017/06/30.
  */
 @Data
-public class RepoSettingForm {
+@EqualsAndHashCode(callSuper = false)
+public class ProductivityRepoSettingForm extends BaseSettingForm {
 
     @NotBlank
     @NotEmpty
@@ -22,8 +24,8 @@ public class RepoSettingForm {
     @NotEmpty
     private String repoLocalPath;
 
-    public RepoSettingForm trim() {
-        RepoSettingForm form = new RepoSettingForm();
+    public ProductivityRepoSettingForm trim() {
+        ProductivityRepoSettingForm form = new ProductivityRepoSettingForm();
 
         form.setRepoAddress(this.repoAddress.trim());
         form.setRepoBranch(this.repoBranch.trim());

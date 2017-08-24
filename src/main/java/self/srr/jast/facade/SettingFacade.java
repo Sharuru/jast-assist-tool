@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import self.srr.jast.common.AstConstant;
 import self.srr.jast.model.GitFile;
-import self.srr.jast.model.form.RepoSettingForm;
+import self.srr.jast.model.form.BaseSettingForm;
+import self.srr.jast.model.form.ProductivityRepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
 import self.srr.jast.model.response.RepoSettingResponse;
 import self.srr.jast.service.GitService;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class AdminFacade {
+public class SettingFacade {
 
     @Autowired
     SettingService settingService;
@@ -33,13 +34,17 @@ public class AdminFacade {
     @Autowired
     TracerService tracerService;
 
-    public RepoSettingForm getRepoSettingForm() {
-        RepoSettingForm repoSettingForm = settingService.getSetting(AstConstant.SETTING_GROUP_GIT, RepoSettingForm.class);
-        repoSettingForm = repoSettingForm == null ? new RepoSettingForm() : repoSettingForm;
-        return repoSettingForm;
+    public <T> T getSettingForm(String settingGroup, Class<T> returnType) {
+        T settingForm = settingService.getSetting(settingGroup, returnType);
+        try {
+            settingForm = settingForm == null ? returnType.newInstance() : settingForm;
+        } catch (Exception e) {
+            settingForm = (T) new BaseSettingForm();
+        }
+        return settingForm;
     }
 
-    public RepoSettingResponse saveRepoSettingResponse(RepoSettingForm reposettingForm) {
+    public RepoSettingResponse saveRepoSettingResponse(ProductivityRepoSettingForm reposettingForm) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
 
         reposettingForm = reposettingForm.trim();
@@ -63,7 +68,7 @@ public class AdminFacade {
         return repoSettingResponse;
     }
 
-    public BaseResponse refreshRepo(RepoSettingForm repoSettingForm) {
+    public BaseResponse refreshRepo(ProductivityRepoSettingForm repoSettingForm) {
         BaseResponse baseResponse = new BaseResponse();
 
         List<GitFile> gitFiles = new ArrayList<>();

@@ -4,18 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import self.srr.jast.facade.AdminFacade;
-import self.srr.jast.model.form.RepoSettingForm;
-import self.srr.jast.model.response.BaseResponse;
-import self.srr.jast.model.response.RepoSettingResponse;
+import self.srr.jast.common.AstConstant;
+import self.srr.jast.facade.SettingFacade;
+import self.srr.jast.model.form.ProductivityRepoSettingForm;
 import self.srr.jast.service.GitService;
-
-import java.util.List;
 
 /**
  * Admin controller
@@ -24,25 +18,33 @@ import java.util.List;
  */
 @Controller
 @Slf4j
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/setting")
+public class SettingController {
 
     @Autowired
-    AdminFacade adminFacade;
+    SettingFacade settingFacade;
 
     @Autowired
     GitService gitService;
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    String admin(Model model) {
-        model.addAttribute("page", "admin");
-        model.addAttribute("repoSettingForm", adminFacade.getRepoSettingForm());
-        return "admin";
+    @RequestMapping(value = "/general", method = RequestMethod.GET)
+    String general(Model model) {
+        model.addAttribute("page", "setting");
+        //model.addAttribute("repoSettingForm", adminFacade.getSettingForm());
+        return "/page/setting/general";
     }
 
-    @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)
+    @RequestMapping(value = "/productivity", method = RequestMethod.GET)
+    String productivity(Model model) {
+        model.addAttribute("page", "setting");
+        model.addAttribute("repoSettingForm", settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivityRepoSettingForm.class));
+        return "/page/setting/productivity";
+    }
+
+
+ /*   @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)
     @ResponseBody
-    RepoSettingResponse repoSetting(@Validated RepoSettingForm repoSettingForm, BindingResult bindingResult) {
+    RepoSettingResponse repoSetting(@Validated ProductivityRepoSettingForm repoSettingForm, BindingResult bindingResult) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
         if (bindingResult.hasErrors()) {
             log.info("repoSettingForm has errors: " + repoSettingForm.toString());
@@ -59,9 +61,9 @@ public class AdminController {
     BaseResponse repoRefresh() {
         BaseResponse baseResponse = new BaseResponse();
 
-        baseResponse = adminFacade.refreshRepo(adminFacade.getRepoSettingForm());
+        baseResponse = adminFacade.refreshRepo(adminFacade.getSettingForm());
 
         return baseResponse;
 
-    }
+    }*/
 }

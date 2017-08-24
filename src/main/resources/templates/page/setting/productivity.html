@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>JAT - 系统设置</title>
+    <meta charset="UTF-8"/>
+
+    <th:block th:replace="fragments/common :: global"/>
+</head>
+
+<body>
+<!-- navigation -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- content -->
+<div class="container" style="padding-top: 65px;">
+
+    <div class="page-header">
+        <h1>系统设置 - 生产性统计
+            <small>SYSTEM SETTING - PRODUCTIVITY</small>
+        </h1>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">仓库设置</div>
+        </div>
+        <div class="panel-body">
+            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.model.form.ProductivityRepoSettingForm"*/-->
+            <form id="repo-config-form" th:action="@{/setting/productivity/repo}" th:object="${repoSettingForm}"
+                  method="post">
+                <div class="form-group">
+                    <label for="repo-address-input">远程仓库地址</label>
+                    <input type="text" class="form-control" id="repo-address-input" name="repoAddress"
+                           required="required" placeholder="http://example.com/project.git"
+                           th:field="*{repoAddress}"/>
+                </div>
+                <div class="form-group">
+                    <label for="repo-branch-input">跟踪分支</label>
+                    <input type="text" class="form-control" id="repo-branch-input" name="repoBranch"
+                           placeholder="master"
+                           th:field="*{repoBranch}"/>
+                </div>
+                <div class="form-group">
+                    <label for="repo-local-path-input">本地工作目录</label>
+                    <input type="text" class="form-control" id="repo-local-path-input" name="repoLocalPath"
+                           required="required" placeholder="D:\local"
+                           th:field="*{repoLocalPath}"/>
+                </div>
+                <button type="submit" id="save-repo-setting-button" class="btn btn-default btn-primary">保存仓库设置</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">提交者信息对应</div>
+        </div>
+        <div class="panel-body">
+            <div class="panel-body">
+                WORK IN PROGRESS
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+</script>
+
+
+<!-- footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>

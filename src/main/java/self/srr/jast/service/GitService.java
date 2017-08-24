@@ -4,22 +4,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTag;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.stereotype.Service;
 import self.srr.jast.model.GitFile;
-import self.srr.jast.model.form.RepoSettingForm;
+import self.srr.jast.model.form.ProductivityRepoSettingForm;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +29,7 @@ import java.util.List;
 public class GitService {
 
 
-    public void refreshLocalRepo(RepoSettingForm repoSettingForm) throws Exception {
+    public void refreshLocalRepo(ProductivityRepoSettingForm repoSettingForm) throws Exception {
 
         try {
             Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
@@ -44,7 +40,7 @@ public class GitService {
         }
     }
 
-    private void pullRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
+    private void pullRepoToLocal(ProductivityRepoSettingForm repoSettingForm) throws Exception {
 
         Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
         git.reset().setMode(ResetCommand.ResetType.HARD).call();
@@ -54,7 +50,7 @@ public class GitService {
     }
 
 
-    private void cloneRepoToLocal(RepoSettingForm repoSettingForm) throws Exception {
+    private void cloneRepoToLocal(ProductivityRepoSettingForm repoSettingForm) throws Exception {
 
         File localPath = new File(repoSettingForm.getRepoLocalPath());
 
