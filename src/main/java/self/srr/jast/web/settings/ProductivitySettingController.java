@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import self.srr.jast.common.AstConstant;
 import self.srr.jast.facade.SettingFacade;
-import self.srr.jast.model.form.ProductivityRepoSettingForm;
+import self.srr.jast.model.form.ProductivitySettingForm;
 
 
 @Controller
@@ -22,7 +22,7 @@ public class ProductivitySettingController {
     @RequestMapping(method = RequestMethod.GET)
     String index(Model model) {
         model.addAttribute("page", "settings");
-        model.addAttribute("repoSettingForm", settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivityRepoSettingForm.class));
+        model.addAttribute("repoSettingForm", settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivitySettingForm.class));
         return "/page/settings/productivity";
     }
 }

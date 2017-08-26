@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import self.srr.jast.facade.ProductivityFacade;
 import self.srr.jast.service.GitService;
 
 /**
@@ -19,19 +20,18 @@ import self.srr.jast.service.GitService;
 public class ProductivityToolController {
 
     @Autowired
-    GitService gitService;
+    ProductivityFacade productivityFacade;
 
     @RequestMapping(method = RequestMethod.GET)
-    String index(Model model){
+    String index(Model model) {
         model.addAttribute("page", "tools");
-
         return "/page/tools/productivity";
-
     }
 
-    @RequestMapping(value="/statistics",method = RequestMethod.POST)
+    @RequestMapping(value = "/statistics", method = RequestMethod.POST)
     @ResponseBody
-    String statistics(Model model){
+    String statistics(Model model) {
+        //productivityFacade.calculateProductivity();
         return "GET";
     }
 }

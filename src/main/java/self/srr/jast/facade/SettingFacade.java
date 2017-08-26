@@ -2,11 +2,11 @@ package self.srr.jast.facade;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import self.srr.jast.common.AstConstant;
 import self.srr.jast.model.GitFile;
 import self.srr.jast.model.form.BaseForm;
-import self.srr.jast.model.form.ProductivityRepoSettingForm;
+import self.srr.jast.model.form.ProductivitySettingForm;
 import self.srr.jast.model.response.BaseResponse;
 import self.srr.jast.model.response.RepoSettingResponse;
 import self.srr.jast.service.GitService;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Setting facade
  */
-@Service
+@Component
 @Slf4j
 public class SettingFacade {
 
@@ -45,7 +45,7 @@ public class SettingFacade {
         return settingForm;
     }
 
-    public RepoSettingResponse saveRepoSettingResponse(ProductivityRepoSettingForm reposettingForm) {
+    public RepoSettingResponse saveRepoSettingResponse(ProductivitySettingForm reposettingForm) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
 
         reposettingForm = reposettingForm.trim();
@@ -69,7 +69,7 @@ public class SettingFacade {
         return repoSettingResponse;
     }
 
-    public BaseResponse refreshRepo(ProductivityRepoSettingForm repoSettingForm) {
+    public BaseResponse refreshRepo(ProductivitySettingForm repoSettingForm) {
         BaseResponse baseResponse = new BaseResponse();
 
         List<GitFile> gitFiles = new ArrayList<>();

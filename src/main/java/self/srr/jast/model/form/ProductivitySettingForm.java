@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ProductivityRepoSettingForm extends BaseForm {
+public class ProductivitySettingForm extends BaseForm {
 
     @NotBlank
     @NotEmpty
@@ -22,8 +22,8 @@ public class ProductivityRepoSettingForm extends BaseForm {
     @NotEmpty
     private String repoLocalPath;
 
-    public ProductivityRepoSettingForm trim() {
-        ProductivityRepoSettingForm form = new ProductivityRepoSettingForm();
+    public ProductivitySettingForm trim() {
+        ProductivitySettingForm form = new ProductivitySettingForm();
 
         form.setRepoAddress(this.repoAddress.trim());
         form.setRepoBranch(this.repoBranch.trim());

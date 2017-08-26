@@ -6,10 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import self.srr.jast.common.AstConstant;
 import self.srr.jast.facade.SettingFacade;
-import self.srr.jast.model.form.ProductivityRepoSettingForm;
-import self.srr.jast.service.GitService;
 
 /**
  * Settings controller
@@ -34,7 +31,7 @@ public class GeneralSettingController {
 
  /*   @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)
     @ResponseBody
-    RepoSettingResponse repoSetting(@Validated ProductivityRepoSettingForm repoSettingForm, BindingResult bindingResult) {
+    RepoSettingResponse repoSetting(@Validated ProductivitySettingForm repoSettingForm, BindingResult bindingResult) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
         if (bindingResult.hasErrors()) {
             log.info("repoSettingForm has errors: " + repoSettingForm.toString());

@@ -9,13 +9,16 @@ import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.revwalk.filter.CommitTimeRevFilter;
+import org.eclipse.jgit.revwalk.filter.RevFilter;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.springframework.stereotype.Service;
 import self.srr.jast.model.GitFile;
-import self.srr.jast.model.form.ProductivityRepoSettingForm;
+import self.srr.jast.model.form.ProductivitySettingForm;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,7 @@ import java.util.List;
 public class GitService {
 
 
-    public void refreshLocalRepo(ProductivityRepoSettingForm repoSettingForm) throws Exception {
+    public void refreshLocalRepo(ProductivitySettingForm repoSettingForm) throws Exception {
 
         try {
             Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
@@ -38,7 +41,7 @@ public class GitService {
         }
     }
 
-    private void pullRepoToLocal(ProductivityRepoSettingForm repoSettingForm) throws Exception {
+    private void pullRepoToLocal(ProductivitySettingForm repoSettingForm) throws Exception {
 
         Git git = Git.open(new File(repoSettingForm.getRepoLocalPath() + "\\.git"));
         git.reset().setMode(ResetCommand.ResetType.HARD).call();
@@ -48,7 +51,7 @@ public class GitService {
     }
 
 
-    private void cloneRepoToLocal(ProductivityRepoSettingForm repoSettingForm) throws Exception {
+    private void cloneRepoToLocal(ProductivitySettingForm repoSettingForm) throws Exception {
 
         File localPath = new File(repoSettingForm.getRepoLocalPath());
 
@@ -65,16 +68,42 @@ public class GitService {
         git.close();
     }
 
+    private Repository getRepository(String path, String refMark) throws IOException {
+        FileRepositoryBuilder builder = new FileRepositoryBuilder();
+
+        return builder.setGitDir(new File(path + "\\.git"))
+                .readEnvironment()
+                .findGitDir()
+                .build();
+    }
+
+    public void getCommits(String path, String refMark, RevFilter filter) {
+        try {
+            Repository repository = getRepository(path, refMark);
+
+            RevWalk walk = new RevWalk(repository);
+
+            if (filter != null) {
+                walk.setRevFilter(filter);
+            }
+
+            for (RevCommit rev : walk) {
+                System.out.println("Commit: " + rev);
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
     public List<GitFile> getGitFilePathList(String path, String refMark) throws Exception {
 
         List<GitFile> fileList = new ArrayList<>();
 
-        FileRepositoryBuilder builder = new FileRepositoryBuilder();
-
-        Repository repository = builder.setGitDir(new File(path + "\\.git"))
-                .readEnvironment()
-                .findGitDir()
-                .build();
+        Repository repository = getRepository(path, refMark);
 
         log.info("Set repo at: " + repository.getDirectory());
 

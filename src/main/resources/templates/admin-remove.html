@@ -25,7 +25,7 @@
             <div class="panel-title">仓库配置</div>
         </div>
         <div class="panel-body">
-            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.model.form.ProductivityRepoSettingForm"*/-->
+            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.model.form.ProductivitySettingForm"*/-->
             <form id="repo-config-form" th:action="@{/admin/repo}" th:object="${repoSettingForm}" method="post">
                 <div class="form-group">
                     <label for="repo-address-input">远程仓库地址</label>
