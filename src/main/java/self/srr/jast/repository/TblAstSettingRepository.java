@@ -7,8 +7,6 @@ import self.srr.jast.model.entity.TblAstSetting;
 
 /**
  * Setting repository
- * <p>
- * Created by Sharuru on 2017/06/30.
  */
 @Repository
 public interface TblAstSettingRepository extends JpaRepository<TblAstSetting, Long>, QueryByExampleExecutor<TblAstSetting> {

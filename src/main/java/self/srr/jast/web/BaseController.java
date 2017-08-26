@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Base controller
- * <p>
- * Created by Sharuru on 2017/06/29.
  */
 @Controller
 @Slf4j

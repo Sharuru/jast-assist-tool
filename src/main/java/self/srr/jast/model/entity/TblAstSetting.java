@@ -12,8 +12,6 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
  * Setting entity
- * <p>
- * Created by Sharuru on 2017/06/30.
  */
 @Data
 @Entity

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import self.srr.jast.common.AstConstant;
 import self.srr.jast.model.GitFile;
-import self.srr.jast.model.form.BaseSettingForm;
+import self.srr.jast.model.form.BaseForm;
 import self.srr.jast.model.form.ProductivityRepoSettingForm;
 import self.srr.jast.model.response.BaseResponse;
 import self.srr.jast.model.response.RepoSettingResponse;
@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Admin facade
- * <p>
- * Created by Sharuru on 2017/7/1 0001.
+ * Setting facade
  */
 @Service
 @Slf4j
@@ -34,12 +32,15 @@ public class SettingFacade {
     @Autowired
     TracerService tracerService;
 
-    public <T> T getSettingForm(String settingGroup, Class<T> returnType) {
-        T settingForm = settingService.getSetting(settingGroup, returnType);
+    public <T> T getSettingForm(String settingGroup, Class<T> formType) {
+        T settingForm = settingService.getSetting(settingGroup, formType);
+
         try {
-            settingForm = settingForm == null ? returnType.newInstance() : settingForm;
+            settingForm = settingForm == null ? formType.newInstance() : settingForm;
         } catch (Exception e) {
-            settingForm = (T) new BaseSettingForm();
+            log.error("Error happened in `getSettingForm`: " + e.getMessage());
+            e.printStackTrace();
+            settingForm = (T) new BaseForm();
         }
         return settingForm;
     }

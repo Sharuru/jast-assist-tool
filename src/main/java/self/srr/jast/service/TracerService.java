@@ -14,8 +14,6 @@ import java.util.Date;
 
 /**
  * Tracer service
- * <p>
- * Created by Sharuru on 2017/7/2 0002.
  */
 @Service
 @Slf4j

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * Account controller
- * <p>
- * Created by Sharuru on 2017/06/29.
  */
 @Controller
 @Slf4j

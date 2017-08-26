@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>JAT - 工具集</title>
+    <meta charset="UTF-8"/>
+
+    <th:block th:replace="fragments/common :: global"/>
+</head>
+
+<body>
+<!-- navigation -->
+<div th:replace="fragments/header :: header"></div>
+
+<!-- content -->
+<div class="container" style="padding-top: 65px;">
+
+    <div class="page-header">
+        <h1>工具集 - 生产性统计
+            <small>TOOLS - PRODUCTIVITY</small>
+        </h1>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">统计信息</div>
+        </div>
+        <div class="panel-body">
+            <form id="repo-config-form" th:action="@{/tools/productivity/statistics}">
+                <div class="form-group">
+                    <label for="repo-address-input">统计仓库地址</label>
+                    <input type="text" class="form-control" id="repo-address-input" name="repoAddress"
+                           placeholder="http://example.com/project.git"/>
+                </div>
+                <div class="form-group">
+                    <label for="repo-branch-input">跟踪分支</label>
+                    <input type="text" class="form-control" id="repo-branch-input" name="repoBranch"
+                           placeholder="master"/>
+                </div>
+                <button type="submit" id="save-repo-setting-button" class="btn btn-default btn-primary">统计</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">统计结果</div>
+        </div>
+        <div class="panel-body">
+            <div class="panel-body">
+                WORK IN PROGRESS
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+
+</script>
+
+
+<!-- footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+
+</html>

@@ -16,28 +16,28 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li th:classappend="${page == null ? 'active' : ''}"><a href="/">首页</a></li>
-                <li class="dropdown">
+                <li class="dropdown" th:classappend="${page == 'tools' ? 'active' : ''}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">工具集<span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">生产性统计</a></li>
+                        <li><a href="/tools/productivity">生产性统计</a></li>
                     </ul>
                 </li>
-                <li class="dropdown" th:classappend="${page == 'setting' ? 'active' : ''}">
+                <li class="dropdown" th:classappend="${page == 'settings' ? 'active' : ''}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">系统设置<span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/setting/general">通用</a></li>
-                        <li><a href="/setting/productivity">生产性统计</a></li>
+                        <li><a href="/settings/general">通用</a></li>
+                        <li><a href="/settings/productivity">生产性统计</a></li>
                     </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li th:unless="${#authorization.expression('isAuthenticated()')}">
-                    <li><a href="/account/login">用户登录</a></li>
+                <li><a href="/account/login">用户登录</a></li>
                 </li>
                 <li th:if="${#authorization.expression('isAuthenticated()')}">
-                    <li><a href="#">您好，<span sec:authentication="principal.user.nickname"></span></a></li>
+                <li><a href="#">您好，<span sec:authentication="principal.user.nickname"></span></a></li>
                 <li id="logout-link"><a href="#">退出系统</a></li>
                 <!-- Hidden form for logout -->
                 <li>

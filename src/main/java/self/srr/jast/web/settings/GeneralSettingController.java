@@ -1,4 +1,4 @@
-package self.srr.jast.web;
+package self.srr.jast.web.settings;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,34 +12,24 @@ import self.srr.jast.model.form.ProductivityRepoSettingForm;
 import self.srr.jast.service.GitService;
 
 /**
- * Admin controller
- * <p>
- * Created by Sharuru on 2017/06/30.
+ * Settings controller
  */
 @Controller
 @Slf4j
-@RequestMapping("/setting")
-public class SettingController {
+@RequestMapping("/settings/general")
+public class GeneralSettingController {
 
     @Autowired
     SettingFacade settingFacade;
 
-    @Autowired
-    GitService gitService;
-
-    @RequestMapping(value = "/general", method = RequestMethod.GET)
-    String general(Model model) {
-        model.addAttribute("page", "setting");
+    @RequestMapping(method = RequestMethod.GET)
+    String index(Model model) {
+        model.addAttribute("page", "settings");
         //model.addAttribute("repoSettingForm", adminFacade.getSettingForm());
-        return "/page/setting/general";
+        return "/page/settings/general";
     }
 
-    @RequestMapping(value = "/productivity", method = RequestMethod.GET)
-    String productivity(Model model) {
-        model.addAttribute("page", "setting");
-        model.addAttribute("repoSettingForm", settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivityRepoSettingForm.class));
-        return "/page/setting/productivity";
-    }
+
 
 
  /*   @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)

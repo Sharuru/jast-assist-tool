@@ -9,8 +9,6 @@ import self.srr.jast.repository.TblAstSettingRepository;
 
 /**
  * Setting service
- * <p>
- * Created by Sharuru on 2017/06/30.
  */
 @Service
 @Slf4j

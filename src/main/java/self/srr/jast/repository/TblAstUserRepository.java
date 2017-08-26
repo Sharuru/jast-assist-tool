@@ -7,8 +7,6 @@ import self.srr.jast.model.entity.TblAstUser;
 
 /**
  * User repository
- * <p>
- * Created by Sharuru on 2017/06/29.
  */
 @Repository
 public interface TblAstUserRepository extends JpaRepository<TblAstUser, Long>, QueryByExampleExecutor<TblAstUser> {

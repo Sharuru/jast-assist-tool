@@ -11,9 +11,7 @@ import self.srr.jast.model.entity.TblAstUser;
 import self.srr.jast.repository.TblAstUserRepository;
 
 /**
- * Custom user service
- * <p>
- * Created by Sharuru on 2017/06/29.
+ * Custom user detail service
  */
 @Service
 @Slf4j

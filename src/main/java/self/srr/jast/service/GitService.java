@@ -21,8 +21,6 @@ import java.util.List;
 
 /**
  * Git service
- * <p>
- * Created by Sharuru on 2017/06/30.
  */
 @Service
 @Slf4j

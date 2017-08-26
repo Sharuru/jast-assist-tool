@@ -7,12 +7,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * Repo setting form
- * <p>
- * Created by Sharuru on 2017/06/30.
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ProductivityRepoSettingForm extends BaseSettingForm {
+public class ProductivityRepoSettingForm extends BaseForm {
 
     @NotBlank
     @NotEmpty

@@ -16,8 +16,6 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 
 /**
  * User entity
- * <p>
- * Created by Sharuru on 2017/06/29.
  */
 @Data
 @Entity

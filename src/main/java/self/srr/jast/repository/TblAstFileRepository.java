@@ -7,8 +7,6 @@ import self.srr.jast.model.entity.TblAstFile;
 
 /**
  * File repository
- * <p>
- * Created by Sharuru on 2017/7/2 0002.
  */
 @Repository
 public interface TblAstFileRepository extends JpaRepository<TblAstFile, Long>, QueryByExampleExecutor<TblAstFile> {

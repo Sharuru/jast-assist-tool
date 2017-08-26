@@ -12,8 +12,6 @@ import self.srr.jast.common.security.AstUserDetailService;
 
 /**
  * Security configuration
- * <p>
- * Created by Sharuru on 2017/06/29.
  */
 @Configuration
 @EnableWebSecurity
@@ -33,7 +31,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authProvider.setUserDetailsService(astUserDetailService);
         return authProvider;
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

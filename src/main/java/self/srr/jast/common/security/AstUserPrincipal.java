@@ -11,9 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Custom user entity
- * <p>
- * Created by Sharuru on 2017/06/29.
+ * Custom user detail entity
  */
 public class AstUserPrincipal implements UserDetails {
 
