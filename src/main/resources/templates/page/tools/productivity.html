@@ -25,16 +25,17 @@
             <div class="panel-title">统计信息</div>
         </div>
         <div class="panel-body">
-            <form id="repo-config-form" th:action="@{/tools/productivity/statistics}" method="post">
+            <!--/*@thymesVar id="repoSettingForm" type="self.srr.jast.model.form.ProductivitySettingForm"*/-->
+            <form id="repo-config-form" th:action="@{/tools/productivity/statistics}" th:object="${repoSettingForm}" method="post">
                 <div class="form-group">
                     <label for="repo-address-input">统计仓库地址</label>
                     <input type="text" class="form-control" id="repo-address-input" name="repoAddress"
-                           placeholder="http://example.com/project.git"/>
+                           placeholder="http://example.com/project.git" disabled="disabled" th:field="*{repoAddress}"/>
                 </div>
                 <div class="form-group">
                     <label for="repo-branch-input">跟踪分支</label>
                     <input type="text" class="form-control" id="repo-branch-input" name="repoBranch"
-                           placeholder="master"/>
+                           placeholder="master" disabled="disabled" th:field="*{repoBranch}"/>
                 </div>
                 <button type="submit" id="save-repo-setting-button" class="btn btn-default btn-primary">统计</button>
             </form>
