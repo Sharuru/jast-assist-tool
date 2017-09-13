@@ -22,7 +22,6 @@ public class ProductivityFacade {
     @Autowired
     GitService gitService;
 
-
     public void calculateProductivity(ProductivityToolForm form) throws IOException {
         RevFilter between = CommitTimeRevFilter.between(new Date(), new Date());
 

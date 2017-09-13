@@ -22,35 +22,6 @@ public class GeneralSettingController {
     @RequestMapping(method = RequestMethod.GET)
     String index(Model model) {
         model.addAttribute("page", "settings");
-        //model.addAttribute("repoSettingForm", adminFacade.getSettingForm());
         return "/page/settings/general";
     }
-
-
-
-
- /*   @RequestMapping(value = "/setting/repo", method = RequestMethod.POST)
-    @ResponseBody
-    RepoSettingResponse repoSetting(@Validated ProductivitySettingForm repoSettingForm, BindingResult bindingResult) {
-        RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
-        if (bindingResult.hasErrors()) {
-            log.info("repoSettingForm has errors: " + repoSettingForm.toString());
-            repoSettingResponse.setStatus(false);
-            repoSettingResponse.setMessage("bingingResult.hasErrors()");
-        } else {
-            repoSettingResponse = adminFacade.saveRepoSettingResponse(repoSettingForm);
-        }
-        return repoSettingResponse;
-    }
-
-    @RequestMapping(value = "/repo/refresh", method = RequestMethod.POST)
-    @ResponseBody
-    BaseResponse repoRefresh() {
-        BaseResponse baseResponse = new BaseResponse();
-
-        baseResponse = adminFacade.refreshRepo(adminFacade.getSettingForm());
-
-        return baseResponse;
-
-    }*/
 }

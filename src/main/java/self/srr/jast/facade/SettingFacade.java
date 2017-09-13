@@ -32,7 +32,15 @@ public class SettingFacade {
     @Autowired
     TracerService tracerService;
 
+    /**
+     * Get setting form from setting service
+     *
+     * @param settingGroup configuration key
+     * @param formType     return type
+     * @return settings
+     */
     public <T> T getSettingForm(String settingGroup, Class<T> formType) {
+
         T settingForm = settingService.getSetting(settingGroup, formType);
 
         try {
@@ -45,6 +53,12 @@ public class SettingFacade {
         return settingForm;
     }
 
+    /**
+     * Save repo setting via setting service
+     *
+     * @param repoSettingForm setting content
+     * @return ajax response
+     */
     public RepoSettingResponse saveRepoSettingResponse(ProductivitySettingForm repoSettingForm) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
 
@@ -68,34 +82,4 @@ public class SettingFacade {
 
         return repoSettingResponse;
     }
-
-    public BaseResponse refreshRepo(ProductivitySettingForm repoSettingForm) {
-        BaseResponse baseResponse = new BaseResponse();
-
-        List<GitFile> gitFiles = new ArrayList<>();
-
-        try {
-            // refresh local repo
-            gitService.refreshLocalRepo(repoSettingForm);
-            gitFiles = gitService.getGitFilePathList(repoSettingForm.getRepoLocalPath(), repoSettingForm.getRepoBranch());
-
-            for (GitFile file : gitFiles) {
-                if (!tracerService.isFileInTrack(file.getFilePath())) {
-                    // add to track
-                    tracerService.addFileToTrackQueue(file);
-                }
-            }
-
-        } catch (Exception e) {
-            log.error("Error happened in `refreshRepo`: " + e.getMessage());
-            e.printStackTrace();
-            baseResponse.setStatus(false);
-            baseResponse.setMessage(e.getMessage());
-        }
-
-
-        return baseResponse;
-    }
-
-
 }

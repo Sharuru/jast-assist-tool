@@ -35,17 +35,17 @@ public class TracerService {
         tblAstFile.setFileName(gitFile.getFileName());
         tblAstFile.setFilePath(gitFile.getFilePath());
         tblAstFile.setRevisionId(gitFile.getRevisionId());
-        tblAstFile.setFileStatus(AstConstant.FILE_STATUS_INITIALIZE);
-        tblAstFile.setReviewStatus(AstConstant.REVIEW_STATUS_NOT_REVIEWED);
-        tblAstFile.setDeliveryStatus(AstConstant.DELIVERY_STATUS_WONT_DELIVER);
+        tblAstFile.setFileStatus(AstConstant.DEL_FILE_STATUS_INITIALIZE);
+        tblAstFile.setReviewStatus(AstConstant.DEL_REVIEW_STATUS_NOT_REVIEWED);
+        tblAstFile.setDeliveryStatus(AstConstant.DEL_DELIVERY_STATUS_WONT_DELIVER);
         tblAstFile = tblAstFileRepository.save(tblAstFile);
 
         TblAstHistory tblAstHistory = new TblAstHistory();
 
         tblAstHistory.setFileId(tblAstFile.getId());
         tblAstHistory.setRevisionId(gitFile.getRevisionId());
-        tblAstHistory.setOperationTask(AstConstant.OPERATION_IMPORT);
-        tblAstHistory.setOperator(AstConstant.SYSTEM_OPERATOR);
+        tblAstHistory.setOperationTask(AstConstant.DEL_OPERATION_IMPORT);
+        tblAstHistory.setOperator(AstConstant.DEL_SYSTEM_OPERATOR);
         tblAstHistory.setOperationTime(new Date());
 
         tblAstHistoryRepository.save(tblAstHistory);
