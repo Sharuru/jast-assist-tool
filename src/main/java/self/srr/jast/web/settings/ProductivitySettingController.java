@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import self.srr.jast.common.AstConstant;
 import self.srr.jast.facade.SettingFacade;
 import self.srr.jast.model.form.ProductivitySettingForm;
+import self.srr.jast.model.response.RepoSettingResponse;
 
 
 @Controller
@@ -24,5 +26,11 @@ public class ProductivitySettingController {
         model.addAttribute("page", "settings");
         model.addAttribute("repoSettingForm", settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivitySettingForm.class));
         return "/page/settings/productivity";
+    }
+
+    @RequestMapping(value="/repo", method = RequestMethod.POST)
+    @ResponseBody
+    RepoSettingResponse saveRepoConfigForm(ProductivitySettingForm productivitySettingForm) {
+        return settingFacade.saveRepoSettingResponse(productivitySettingForm);
     }
 }

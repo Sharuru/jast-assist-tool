@@ -45,20 +45,20 @@ public class SettingFacade {
         return settingForm;
     }
 
-    public RepoSettingResponse saveRepoSettingResponse(ProductivitySettingForm reposettingForm) {
+    public RepoSettingResponse saveRepoSettingResponse(ProductivitySettingForm repoSettingForm) {
         RepoSettingResponse repoSettingResponse = new RepoSettingResponse();
 
-        reposettingForm = reposettingForm.trim();
+        repoSettingForm = repoSettingForm.trim();
         // setting default branch
-        if (reposettingForm.getRepoBranch().isEmpty()) {
-            reposettingForm.setRepoBranch(AstConstant.DEFAULT_BRANCH);
+        if (repoSettingForm.getRepoBranch().isEmpty()) {
+            repoSettingForm.setRepoBranch(AstConstant.DEFAULT_BRANCH);
         }
         // persist to database
         try {
-            settingService.saveSetting(AstConstant.SETTING_GROUP_GIT, reposettingForm);
-            repoSettingResponse.setRepoAddress(reposettingForm.getRepoAddress());
-            repoSettingResponse.setRepoBranch(reposettingForm.getRepoBranch());
-            repoSettingResponse.setRepoLocalPath(reposettingForm.getRepoLocalPath());
+            settingService.saveSetting(AstConstant.SETTING_PROD_GIT, repoSettingForm);
+            repoSettingResponse.setRepoAddress(repoSettingForm.getRepoAddress());
+            repoSettingResponse.setRepoBranch(repoSettingForm.getRepoBranch());
+            repoSettingResponse.setRepoLocalPath(repoSettingForm.getRepoLocalPath());
         } catch (Exception e) {
             log.error("Error happened in `saveRepoSettingResponse`: " + e.getMessage());
             e.printStackTrace();

@@ -9,8 +9,6 @@ public class AstConstant {
 
     public static final String DEFAULT_BRANCH = "master";
 
-    public static final String SETTING_GROUP_GIT = "GROUP_GIT";
-
     public static final String SETTING_PROD_GIT = "PROD_GIT";
 
     // TODO design

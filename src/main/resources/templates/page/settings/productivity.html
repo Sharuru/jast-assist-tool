@@ -64,7 +64,45 @@
 
 </div>
 <script>
+    $(function () {
 
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+
+        $('#repo-config-form').on('submit', function (e) {
+            $('#save-repo-setting-result').text('Saving...');
+            $.ajax({
+                type: 'POST',
+                url: '/settings/productivity/repo',
+                data: $(this).serialize()
+            })
+                .done(function (data) {
+                    if (data.status === true) {
+                        swal({
+                            title: "成功",
+                            text: "数据保存成功",
+                            type: "success"
+
+                        });
+                        $('#repo-address-input').val(data.repoAddress);
+                        $('#repo-branch-input').val(data.repoBranch);
+                        $('#repo-local-path-input').val(data.repoLocalPath);
+                    } else {
+                        swal({
+                            title: "失败",
+                            text: "数据保存失败 <br/>" + data.message,
+                            type: "error",
+                            html: true
+                        });
+                    }
+                });
+            e.preventDefault();
+        });
+    });
 </script>
 
 
