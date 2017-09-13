@@ -2,6 +2,7 @@ package self.srr.jast.web.tools;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,10 @@ import self.srr.jast.common.AstConstant;
 import self.srr.jast.facade.ProductivityFacade;
 import self.srr.jast.facade.SettingFacade;
 import self.srr.jast.model.form.ProductivitySettingForm;
+import self.srr.jast.model.form.ProductivityToolForm;
 import self.srr.jast.service.GitService;
+
+import java.io.IOException;
 
 /**
  * Tools controller
@@ -37,8 +41,12 @@ public class ProductivityToolController {
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST)
     @ResponseBody
-    String statistics(Model model) {
-        //productivityFacade.calculateProductivity();
+    String statistics(Model model) throws Exception {
+
+        ProductivitySettingForm productivitySettingForm = settingFacade.getSettingForm(AstConstant.SETTING_PROD_GIT, ProductivitySettingForm.class);
+
+        productivityFacade.calculateProductivity(productivitySettingForm);
+
         return "GET";
     }
 }

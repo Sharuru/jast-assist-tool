@@ -9,8 +9,8 @@ public class ProductivityToolForm extends BaseForm {
 
     String until;
 
-    String path;
+    String repoLocalPath;
 
-    String refMark;
+    String repoBranch;
 
 }
