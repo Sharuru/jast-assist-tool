@@ -4,8 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.Edit;
@@ -15,22 +13,16 @@ import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
-import org.eclipse.jgit.revwalk.filter.CommitTimeRevFilter;
 import org.eclipse.jgit.revwalk.filter.RevFilter;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
-import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.springframework.stereotype.Service;
 import self.srr.jast.model.CommitterModel;
-import self.srr.jast.model.GitFile;
-import self.srr.jast.model.form.ProductivitySettingForm;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -40,32 +32,58 @@ import java.util.*;
 @Slf4j
 public class GitService {
 
+    /**
+     * refresh local git repo by clone/pull with reset hard
+     *
+     * @param localPath   local repo location
+     * @param remotePath  remote repo location
+     * @param trackBranch tracking branch name
+     * @throws Exception exception
+     */
     public void refreshLocalRepo(String localPath, String remotePath, String trackBranch) throws Exception {
         try {
             Git git = Git.open(new File(localPath + "\\.git"));
             git.close();
             pullRepoToLocal(localPath, remotePath, trackBranch);
         } catch (Exception e) {
+            // local git repo not exist, clone
             cloneRepoToLocal(localPath, remotePath, trackBranch);
         }
     }
 
+    /**
+     * pull repo from remote
+     *
+     * @param localPath   local repo location
+     * @param remotePath  remote repo location
+     * @param trackBranch tracking branch name
+     * @throws Exception exception
+     */
     private void pullRepoToLocal(String localPath, String remotePath, String trackBranch) throws Exception {
-
         Git git = Git.open(new File(localPath + "\\.git"));
+
         if (!trackBranch.equals(git.getRepository().getBranch())) {
             log.info("Track branch not same! " + "Local: " + git.getRepository().getBranch() + " Track: " + trackBranch);
             throw new Exception();
         }
-        git.reset().setMode(ResetCommand.ResetType.HARD).call();
+
         log.info("Starting pull repo from: " + remotePath + " at branch: " + trackBranch + " to: " + localPath + " at branch: " + git.getRepository().getBranch());
+
+        git.reset().setMode(ResetCommand.ResetType.HARD).call();
         git.pull().call();
         git.close();
 
         log.info("Pull repo from: " + remotePath + " at branch: " + trackBranch + " to: " + localPath + "finished");
     }
 
-
+    /**
+     * clone repo from remote
+     *
+     * @param localPath   local repo location
+     * @param remotePath  remote repo location
+     * @param trackBranch tracking branch name
+     * @throws Exception exception
+     */
     private void cloneRepoToLocal(String localPath, String remotePath, String trackBranch) throws Exception {
         File localDir = new File(localPath);
         FileUtils.deleteDirectory(localDir);
@@ -82,6 +100,13 @@ public class GitService {
         log.info("Clone repo from: " + remotePath + " at branch: " + trackBranch + " to: " + localDir + "finished");
     }
 
+    /**
+     * get local repo
+     *
+     * @param localPath local repo location
+     * @return repository object
+     * @throws IOException exception
+     */
     private Repository getRepository(String localPath) throws IOException {
         FileRepositoryBuilder builder = new FileRepositoryBuilder();
 
@@ -91,6 +116,15 @@ public class GitService {
                 .build();
     }
 
+    /**
+     * visit local repo commits
+     *
+     * @param localPath local repo location
+     * @param refMark   visit refs(branch name)
+     * @param filter    visit filter(since, until, etc.)
+     * @return visited commit object list
+     * @throws Exception exception
+     */
     public List<RevCommit> getLocalCommits(String localPath, String refMark, RevFilter filter) throws Exception {
 
         List<RevCommit> commits = new ArrayList<>();
@@ -102,11 +136,12 @@ public class GitService {
             revWalk.setRevFilter(filter);
         }
 
+        // get head commit
         RevCommit headCommit = revWalk.parseCommit(ref.getObjectId());
         revWalk.markStart(headCommit);
 
         for (RevCommit revCommit : revWalk) {
-            log.info("Get commit: " + revCommit.getShortMessage() + " by " + revCommit.getCommitterIdent().getName() + " at " + new Date(revCommit.getCommitTime() * 1000L));
+            log.info("Get commit: " + revCommit.getShortMessage() + " by " + revCommit.getAuthorIdent().getName() + " at " + new Date(revCommit.getCommitTime() * 1000L));
             commits.add(revCommit);
         }
 
